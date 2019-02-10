@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/elasticsearch/elasticsearch-rails.git
+  revision: bb1fc82b56b4eca76dbe9394bd842630e6c0424a
+  branch: 6.x
+  specs:
+    elasticsearch-model (6.0.0)
+      activesupport (> 3)
+      elasticsearch (> 1)
+      hashie
+    elasticsearch-rails (6.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -76,11 +87,22 @@ GEM
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.4)
     crass (1.0.4)
+    elasticsearch (6.1.0)
+      elasticsearch-api (= 6.1.0)
+      elasticsearch-transport (= 6.1.0)
+    elasticsearch-api (6.1.0)
+      multi_json
+    elasticsearch-transport (6.1.0)
+      faraday
+      multi_json
     erubi (1.8.0)
     execjs (2.7.0)
+    faraday (0.15.4)
+      multipart-post (>= 1.2, < 3)
     ffi (1.10.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hashie (3.6.0)
     i18n (1.5.3)
       concurrent-ruby (~> 1.0)
     io-like (0.3.0)
@@ -105,6 +127,7 @@ GEM
     minitest (5.11.3)
     msgpack (1.2.6)
     multi_json (1.13.1)
+    multipart-post (2.0.0)
     mysql2 (0.5.2)
     nio4r (2.3.1)
     nokogiri (1.10.1)
@@ -202,6 +225,8 @@ DEPENDENCIES
   capybara (>= 2.15)
   chromedriver-helper
   coffee-rails (~> 4.2)
+  elasticsearch-model!
+  elasticsearch-rails!
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   mysql2
