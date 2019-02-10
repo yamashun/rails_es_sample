@@ -1,0 +1,29 @@
+<h1>Mangas</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Aauthor</th>
+      <th>Publisher</th>
+      <th>Category</th>
+      <th>Author</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mangas.each do |manga| %>
+      <tr>
+        <td><%= manga.author.name %></td>
+        <td><%= manga.publisher.name %></td>
+        <td><%= manga.category.name %></td>
+        <td><%= manga.author.name %></td>
+        <td><%= manga.title %></td>
+        <td><%= manga.description %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
