@@ -1,0 +1,66 @@
+version: '3'
+services:
+  # Elasticsearch用のコンテナ
+  es:
+    build: ./docker/es
+    container_name: es_sample
+    environment:
+      - cluster.name=rails-sample-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_sample_data:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+  # Kibana用のコンテナ
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.5.4
+    environment:
+      SERVER_NAME: localhost:5601
+      ELASTICSEARCH_URL: http://es_sample:9200
+    ports:
+      - 5601:5601
+    depends_on:
+      - es
+  # MYSQL用のコンテナ
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=docker
+      - MYSQL_PASSWORD=docker
+      - MYSQL_USER=docker
+      - MYSQL_DATABASE=rails_es_sample
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql:/etc/mysql
+  # Rails用のコンテナ
+  rails:
+    build: .
+    # 必要であればshなどに bundle install や rails s を実行してrailsを起動する処理を書く
+    # command: scripts/start-server.sh
+    volumes:
+      - .:/app
+      - sample_vendor_bundle:/app/vendor/bundle
+    ports:
+      - "3003:3000"
+    links:
+      - db
+      - es
+    environment:
+      - RAILS_DATABASE_USERNAME=root
+      - RAILS_DATABASE_PASSWORD=docker
+      - RAILS_DATABASE_NAME=rails_es_sample
+      - RAILS_DATABASE_HOST=db
+    tty: true
+    stdin_open: true
+
+volumes:
+  es_sample_data:
+    driver: local
+  sample_vendor_bundle:
+    driver: local
