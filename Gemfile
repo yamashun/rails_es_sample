@@ -39,6 +39,8 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem "bulma-rails", "~> 0.7.2"
 
+gem 'kaminari'
+
 gem 'elasticsearch-model', github: 'elasticsearch/elasticsearch-rails', branch: '6.x'
 gem 'elasticsearch-rails', github: 'elasticsearch/elasticsearch-rails', branch: '6.x'
 
