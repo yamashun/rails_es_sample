@@ -4,6 +4,10 @@ module MangaSearchable
   included do
     include Elasticsearch::Model
 
+    scope :recent, lambda {
+      where("updated_at > ?", 1.hour.ago)
+    }
+
     # index名
     index_name "es_manga_#{Rails.env}"
 
