@@ -45,7 +45,7 @@ services:
     # command: scripts/start-server.sh
     volumes:
       - .:/app
-      - sample_vendor_bundle:/app/vendor/bundle
+      - vendor_bundle:/user/local/bundle
     ports:
       - "3003:3000"
     links:
@@ -62,5 +62,5 @@ services:
 volumes:
   es_sample_data:
     driver: local
-  sample_vendor_bundle:
+  vendor_bundle:
     driver: local
