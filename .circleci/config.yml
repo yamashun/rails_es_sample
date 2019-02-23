@@ -61,7 +61,7 @@ jobs:
 workflows:
   es-ci:
     jobs:
-      - checkout-code:
+      - checkout-code
       - rspec-test:
           requires:
             - checkout-code
