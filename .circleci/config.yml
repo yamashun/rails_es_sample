@@ -5,9 +5,9 @@ executors:
     docker:
       - image: yamashun/ruby:2.5.3
         environment:
-          RAILS_DATABASE_PASSWORD=
-          RAILS_DATABASE_HOST=127.0.0.1
-          BUNDLE_GEMFILE=./Gemfile
+          RAILS_DATABASE_PASSWORD: ''
+          RAILS_DATABASE_HOST: 127.0.0.1
+          BUNDLE_GEMFILE: /root/es_sample/Gemfile
       - image: circleci/mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD=true
