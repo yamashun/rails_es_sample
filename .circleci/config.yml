@@ -13,6 +13,7 @@ executors:
           MYSQL_ALLOW_EMPTY_PASSWORD=true
           MYSQL_USER=docker
           MYSQL_DATABASE=rails_es_sample_test
+          MYSQL_HOST=127.0.0.1
       - image: yamashun/es
         environment:
           http.host: '0.0.0.0'
