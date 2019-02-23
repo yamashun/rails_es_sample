@@ -1,0 +1,69 @@
+version: 2.1
+executors:
+  default:
+    working_directory: ~/es_sample
+    docker:
+      - image: yamashun/ruby:2.5.3
+        environment:
+          RAILS_DATABASE_PASSWORD=
+          RAILS_DATABASE_HOST=127.0.0.1
+      - image: circleci/mysql:5.7
+        environment:
+          MYSQL_ALLOW_EMPTY_PASSWORD=true
+          MYSQL_USER=docker
+          MYSQL_DATABASE=rails_es_sample_test
+      - image: yamashun/es
+        environment:
+          http.host: '0.0.0.0'
+          http.port: 9200
+          cluster.name: docker-cluster
+          xpack.security.enabled: false
+          ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+jobs:
+  checkout-code:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gf-bundle-1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+            - gf-bundle-1-{{ .Branch }}-
+            - gf-bundle-1-
+      - run:
+          name: Bundle install
+          command: bin/bundle install --path=./vendor/bundle
+      - save_cache:
+          key: gf-bundle-1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          paths:
+            - ./vendor/bundle
+      - persist_to_workspace:
+          root: .
+          paths: .
+  rspec-test:
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: ~/es_sample
+      - run:
+          name: Bundle install
+          command: bin/bundle install --path ./vendor/bundle
+      - run:
+          name: Database Setup
+          command: |
+            bundle exec rake db:create RAILS_ENV=test
+            bundle exec rake db:schema:load RAILS_ENV=test
+      - run:
+          name: Rspec test
+          command: bundle exec rspec --format progress --color
+
+workflows:
+  es-ci:
+    jobs:
+      - checkout-code:
+      - rspec-test:
+          requires:
+            - checkout-code
+      
+  
