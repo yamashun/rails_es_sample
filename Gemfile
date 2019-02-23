@@ -50,6 +50,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'pry-doc'
   gem 'pry-byebug'
+  gem 'factory_bot_rails'
 end
 
 group :development do
@@ -62,6 +63,7 @@ group :development do
 end
 
 group :test do
+  gem 'rspec-rails'
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
