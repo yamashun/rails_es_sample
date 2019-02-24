@@ -8,7 +8,7 @@ executors:
           RAILS_DATABASE_PASSWORD: ''
           RAILS_DATABASE_HOST: 127.0.0.1
           BUNDLE_GEMFILE: /root/es_sample/Gemfile
-          BUNDLE_PATH: /root/es_sample/vendor/bundle
+          BUNDLE_PATH: /root/es_sample/vendor/bundle/ruby/2.5.0
           ELASTICSEARCH_HOST: 127.0.0.1:9200
       - image: mysql:5.7
         environment:
@@ -55,8 +55,7 @@ jobs:
       - run:
           name: Database Setup
           command: |
-            pwd
-            env | grep RAILS
+            sleep 10
             bundle exec rake db:create RAILS_ENV=test
             bundle exec rake db:schema:load RAILS_ENV=test
       - run:
