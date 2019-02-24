@@ -41,7 +41,7 @@ commands:
       - run:
           name: set env val
           command: |
-            echo 'export TEST_ENV_VAR=`git log -1 --oneline`' >> $BASH_ENV
+            echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
 jobs:
   checkout-code:
     executor:
