@@ -41,7 +41,7 @@ commands:
       - run:
           name: set env val
           command: |
-            echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
+            echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline | grep ci_skip`' >> $BASH_ENV
 jobs:
   checkout-code:
     executor:
@@ -155,7 +155,7 @@ workflows:
             - set-git-log
           requires:
             - rspec-test
-          env_var: ${TEST_ENV_VAR_READ}
+          env_var: TEST_ENV_VAR_READ
       - master_only:
           requires:
             - rspec-test
