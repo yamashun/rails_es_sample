@@ -103,6 +103,10 @@ workflows:
           requires:
             - checkout-code
           param_test: test2
+          filters:
+            branches:
+              only:
+                - ci_test_parameter
       - master_only:
           requires:
             - rspec-test
