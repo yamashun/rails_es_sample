@@ -138,13 +138,13 @@ workflows:
               only:
                 - master
       - env_test:
-          pre-steps:
-            - attach_workspace:
-                at: ~/es_sample
-            - run:
-                name: set env val
-                command: |
-                  echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
+          # pre-steps:
+          #   - attach_workspace:
+          #       at: ~/es_sample
+          #   - run:
+          #       name: set env val
+          #       command: |
+          #         echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
           requires:
             - rspec-test
       - master_only:
