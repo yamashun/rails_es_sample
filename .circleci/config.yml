@@ -69,7 +69,12 @@ jobs:
           at: ~/es_sample
       - run:
           name: test_step
-          command: echo 'test step is executed!!'
+          command: |
+            git log -1 --oneline | grep ci_skip
+            if [ $? -ne 0 ]; then
+              echo "スキップしてリリースを開始します。"
+            fi
+            echo 'test step is executed!!'
 
 workflows:
   es-ci:
