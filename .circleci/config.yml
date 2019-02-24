@@ -81,7 +81,7 @@ workflows:
       - master_only:
           requires:
             - rspec-test
-          filter:
+          filters:
             branches:
               only:
                 - ci_test_master
