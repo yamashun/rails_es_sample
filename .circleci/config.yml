@@ -106,7 +106,7 @@ workflows:
           filters:
             branches:
               only:
-                - ci_test_parameter
+                - master
       - master_only:
           requires:
             - rspec-test
