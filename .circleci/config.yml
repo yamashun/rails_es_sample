@@ -36,6 +36,12 @@ commands:
           condition: ${TEST_ENV_VAR}
           steps:
             - run: echo 'empty value'
+  set-git-log:
+    steps:
+      - run:
+          name: set env val
+          command: |
+            echo 'export TEST_ENV_VAR=`git log -1 --oneline`' >> $BASH_ENV
 jobs:
   checkout-code:
     executor:
@@ -143,13 +149,10 @@ workflows:
               only:
                 - master
       - env_test:
-          # pre-steps:
-          #   - attach_workspace:
-          #       at: ~/es_sample
-          #   - run:
-          #       name: set env val
-          #       command: |
-          #         echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
+          pre-steps:
+            - attach_workspace:
+                at: ~/es_sample
+            - set-git-log
           requires:
             - rspec-test
           env_var: ${TEST_ENV_VAR_READ}
