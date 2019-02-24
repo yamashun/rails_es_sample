@@ -90,7 +90,16 @@ jobs:
             echo 'export TEST_ENV_VAR=`git log -1 --oneline | grep ci_skip`' >> $BASH_ENV
       - echo:
           val: ${TEST_ENV_VAR}
-      
+  env_test:
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: ~/es_sample
+      - run:
+          name: read env
+          command: |
+            echo ${TEST_ENV_VAR}
   master_only:
     executor:
       name: default
@@ -126,6 +135,9 @@ workflows:
             branches:
               only:
                 - master
+      - env_test:
+          requires:
+            - rspec-test
       - master_only:
           requires:
             - rspec-test
