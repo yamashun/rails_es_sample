@@ -8,6 +8,7 @@ executors:
           RAILS_DATABASE_PASSWORD: ''
           RAILS_DATABASE_HOST: 127.0.0.1
           BUNDLE_GEMFILE: /root/es_sample/Gemfile
+          BUNDLE_PATH: /root/es_sample/vendor/bundle
       - image: mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD=true
