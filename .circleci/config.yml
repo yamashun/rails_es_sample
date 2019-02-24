@@ -91,17 +91,22 @@ jobs:
       - echo:
           val: ${TEST_ENV_VAR}
   env_test:
+    parameters:
+      env_var:
+        type: string
     executor:
       name: default
     steps:
       - when:
-          condition: ${TEST_ENV_VAR_READ}
+          condition: <<parameters.env_var>>
           steps:
-            - run: echo ${TEST_ENV_VAR_READ}
+            - run: echo 'not empty value'
+            - run: echo <<parameters.env_var>>
       - unless:
-          condition: ${TEST_ENV_VAR_READ}
+          condition: <<parameters.env_var>>
           steps:
             - run: echo 'empty value'
+            - run: echo <<parameters.env_var>>
   master_only:
     executor:
       name: default
@@ -138,15 +143,16 @@ workflows:
               only:
                 - master
       - env_test:
-          # pre-steps:
-          #   - attach_workspace:
-          #       at: ~/es_sample
-          #   - run:
-          #       name: set env val
-          #       command: |
-          #         echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
+          pre-steps:
+            - attach_workspace:
+                at: ~/es_sample
+            - run:
+                name: set env val
+                command: |
+                  echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
           requires:
             - rspec-test
+          env_var: ${TEST_ENV_VAR_READ}
       - master_only:
           requires:
             - rspec-test
