@@ -22,6 +22,20 @@ executors:
           cluster.name: docker-cluster
           xpack.security.enabled: false
           ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+commands:
+  echo:
+    parameters:
+      val:
+        type: string
+    steps:
+      - when:
+          condition: <<parameters.val>>
+          steps:
+            - run: echo << parameters.val >>
+      - unless:
+          condition: <<parameters.val>>
+          steps:
+            - run: echo 'empty value'
 jobs:
   checkout-code:
     executor:
@@ -61,6 +75,31 @@ jobs:
       - run:
           name: Rspec test
           command: bundle exec rspec --format progress --color
+  test_job:
+    parameters:
+      param_test:
+        type: string
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: ~/es_sample
+      - run:
+          name: set env var
+          command: |
+            echo 'export TEST_ENV_VAR=`git log -1 --oneline | grep ci_skip`' >> $BASH_ENV
+      - echo:
+          val: ${TEST_ENV_VAR}
+  env_test:
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: ~/es_sample
+      - run:
+          name: read env
+          command: |
+            echo ${TEST_ENV_VAR}
   master_only:
     executor:
       name: default
@@ -84,6 +123,21 @@ workflows:
       - rspec-test:
           requires:
             - checkout-code
+      - test_job:
+          requires:
+            - checkout-code
+          param_test: test1
+      - test_job:
+          requires:
+            - checkout-code
+          param_test: test2
+          filters:
+            branches:
+              only:
+                - master
+      - env_test:
+          requires:
+            - rspec-test
       - master_only:
           requires:
             - rspec-test
@@ -91,5 +145,3 @@ workflows:
             branches:
               only:
                 - ci_test_master
-      
-  
