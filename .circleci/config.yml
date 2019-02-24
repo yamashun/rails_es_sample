@@ -61,6 +61,20 @@ jobs:
       - run:
           name: Rspec test
           command: bundle exec rspec --format progress --color
+  master_only:
+    executor:
+      name: default
+    steps:
+      - attach_workspace:
+          at: ~/es_sample
+      - run:
+          name: test_step
+          command: |
+            git log -1 --oneline | grep ci_skip
+            if [ $? -ne 0 ]; then
+              echo "スキップしてリリースを開始します。"
+            fi
+            echo 'test step is executed!!'
 
 workflows:
   es-ci:
@@ -69,5 +83,12 @@ workflows:
       - rspec-test:
           requires:
             - checkout-code
+      - master_only:
+          requires:
+            - rspec-test
+          filters:
+            branches:
+              only:
+                - ci_test_master
       
   
