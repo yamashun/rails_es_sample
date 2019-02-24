@@ -139,6 +139,8 @@ workflows:
                 - master
       - env_test:
           pre-steps:
+            - attach_workspace:
+                at: ~/es_sample
             - run:
                 name: set env val
                 command: |
