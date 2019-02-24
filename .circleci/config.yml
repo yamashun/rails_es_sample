@@ -22,6 +22,13 @@ executors:
           cluster.name: docker-cluster
           xpack.security.enabled: false
           ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+commands:
+  echo:
+    parameters:
+      val:
+        type: string
+    steps:
+      - run: echo << parameters.val >>
 jobs:
   checkout-code:
     executor:
@@ -69,8 +76,11 @@ jobs:
       name: default
     steps:
       - run:
-          name: echo param
-          command: echo << parameters.param_test >>
+          name: set env var
+          command: |
+            echo 'export TEST_ENV_VAR="test set env var"' >> $BASH_ENV
+      - echo:
+          val: << parameters.param_test >>${TEST_ENV_VAR}
       
   master_only:
     executor:
