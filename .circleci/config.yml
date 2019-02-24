@@ -82,6 +82,8 @@ jobs:
     executor:
       name: default
     steps:
+      - attach_workspace:
+          at: ~/es_sample
       - run:
           name: set env var
           command: |
@@ -131,5 +133,3 @@ workflows:
             branches:
               only:
                 - ci_test_master
-      
-  
