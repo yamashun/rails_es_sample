@@ -11,9 +11,8 @@ executors:
       - image: mysql:5.7
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD=true
-          MYSQL_USER=docker
+          MYSQL_USER=root
           MYSQL_DATABASE=rails_es_sample_test
-          MYSQL_HOST=127.0.0.1
       - image: yamashun/es
         environment:
           http.host: '0.0.0.0'
@@ -54,6 +53,8 @@ jobs:
       - run:
           name: Database Setup
           command: |
+            pwd
+            env | grep RAILS
             bundle exec rake db:create RAILS_ENV=test
             bundle exec rake db:schema:load RAILS_ENV=test
       - run:
