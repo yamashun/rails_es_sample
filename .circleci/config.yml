@@ -61,6 +61,17 @@ jobs:
       - run:
           name: Rspec test
           command: bundle exec rspec --format progress --color
+  test_job:
+    parameters:
+      param_test:
+        type: string
+    executor:
+      name: default
+    steps:
+      - run:
+          name: echo param
+          command: echo << parameters.param_test >>
+      
   master_only:
     executor:
       name: default
@@ -84,6 +95,14 @@ workflows:
       - rspec-test:
           requires:
             - checkout-code
+      - test_job:
+          requires:
+            - checkout-code
+          param_test: test1
+      - test_job:
+          requires:
+            - checkout-code
+          param_test: test2
       - master_only:
           requires:
             - rspec-test
