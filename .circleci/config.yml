@@ -29,11 +29,11 @@ commands:
         type: string
     steps:
       - when:
-          condition: <<parameters.val>>
+          condition: ${TEST_ENV_VAR}
           steps:
             - run: echo << parameters.val >>
       - unless:
-          condition: <<parameters.val>>
+          condition: ${TEST_ENV_VAR}
           steps:
             - run: echo 'empty value'
 jobs:
