@@ -94,12 +94,14 @@ jobs:
     executor:
       name: default
     steps:
-      - attach_workspace:
-          at: ~/es_sample
-      - run:
-          name: read env
-          command: |
-            echo ${TEST_ENV_VAR_READ}
+      - when:
+          condition: ${TEST_ENV_VAR_READ}
+          steps:
+            - run: echo ${TEST_ENV_VAR_READ}
+      - unless:
+          condition: ${TEST_ENV_VAR_READ}
+          steps:
+            - run: echo 'empty value'
   master_only:
     executor:
       name: default
