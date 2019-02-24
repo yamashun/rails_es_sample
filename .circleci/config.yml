@@ -28,7 +28,14 @@ commands:
       val:
         type: string
     steps:
-      - run: echo << parameters.val >>
+      - when:
+          condition: <<parameters.val>>
+          steps:
+            - run: echo << parameters.val >>
+      - unless:
+          condition: <<parameters.val>>
+          steps:
+            - run: echo 'empty value'
 jobs:
   checkout-code:
     executor:
@@ -78,9 +85,9 @@ jobs:
       - run:
           name: set env var
           command: |
-            echo 'export TEST_ENV_VAR="test set env var"' >> $BASH_ENV
+            echo 'export TEST_ENV_VAR=`git log -1 --oneline | grep ci_skip`' >> $BASH_ENV
       - echo:
-          val: << parameters.param_test >>${TEST_ENV_VAR}
+          val: ${TEST_ENV_VAR}
       
   master_only:
     executor:
