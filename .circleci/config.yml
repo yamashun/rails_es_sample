@@ -73,9 +73,9 @@ jobs:
             git log -1 --oneline | grep ci_skip
             if [ $? -ne 0 ]; then
               echo "スキップしてリリースを開始します。"
-              exit 0
+            else
+              echo 'test step is executed!!'
             fi
-            echo 'test step is executed!!'
 
 workflows:
   es-ci:
