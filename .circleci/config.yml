@@ -99,7 +99,7 @@ jobs:
       - run:
           name: read env
           command: |
-            echo ${TEST_ENV_VAR}
+            echo ${TEST_ENV_VAR_READ}
   master_only:
     executor:
       name: default
@@ -136,6 +136,11 @@ workflows:
               only:
                 - master
       - env_test:
+          pre-steps:
+            - run:
+                name: set env val
+                command: |
+                  echo 'export TEST_ENV_VAR_READ=`git log -1 --oneline`' >> $BASH_ENV
           requires:
             - rspec-test
       - master_only:
