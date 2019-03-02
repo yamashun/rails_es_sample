@@ -15,8 +15,7 @@ RSpec.describe MangaSearchable, elasticsearch: true do
       end
 
       before :each do
-        Manga.__elasticsearch__.import
-        sleep 1.5
+        Manga.__elasticsearch__.import(refresh: true)
       end
 
       def search_manga_ids

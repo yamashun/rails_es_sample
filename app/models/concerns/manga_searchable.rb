@@ -11,9 +11,6 @@ module MangaSearchable
     settings do
       mappings dynamic: 'false' do
         indexes :id,                   type: 'integer'
-        indexes :publisher,            type: 'keyword'
-        indexes :author,               type: 'keyword'
-        indexes :category,             type: 'text', analyzer: 'kuromoji'
         indexes :title,                type: 'text', analyzer: 'kuromoji'
         indexes :description,          type: 'text', analyzer: 'kuromoji'
       end
@@ -23,20 +20,7 @@ module MangaSearchable
       attributes
         .symbolize_keys
         .slice(:id, :title, :description)
-        .merge(publisher: publisher_name, author: author_name, category: category_name)
     end
-  end
-
-  def publisher_name
-    publisher.name
-  end
-
-  def author_name
-    author.name
-  end
-
-  def category_name
-    category.name
   end
 
   class_methods do
@@ -55,7 +39,7 @@ module MangaSearchable
       __elasticsearch__.search({
         query: {
           multi_match: {
-            fields: %w(id publisher author category title description),
+            fields: %w(title description),
             type: 'cross_fields',
             query: query,
             operator: 'and'

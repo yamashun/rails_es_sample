@@ -1,0 +1,15 @@
+@startuml erd
+skinparam class {
+    BackgroundColor METAL
+    BorderColor Black
+    ArrowColor Black
+}
+
+entity "漫画" as mangas {
+    + 漫画ID [PK]
+    --
+    タイトル
+    説明
+}
+
+@enduml
