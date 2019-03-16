@@ -4,7 +4,6 @@ executors:
     working_directory: ~/sample
     docker:
       - image: yamashun/ruby:2.5.3
-
 jobs:
   test-job:
     executor:
@@ -14,12 +13,12 @@ jobs:
       - run:
           name: test_step
           command: |
-            if [ $? -ne 0 ]; then
+            SKIP_CI_MESSAGE =`git log -1 --oneline | grep skip_test`'
+            if [ -z "${SKIP_CI_MESSAGE}" ]; then
               echo "execute test job"
             else
               echo "skip test job"
             fi
-            echo $?
   deploy-job:
     executor:
       name: default
