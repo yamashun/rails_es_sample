@@ -13,12 +13,13 @@ jobs:
       - run:
           name: test_step
           command: |
-            git log -1 --oneline | grep skip_test |
+            git log -1 --oneline | grep skip_test
             if [ $? -ne 0 ]; then
               echo "execute test job"
             else
               echo "skip test job"
             fi
+            echo $?
   deploy-job:
     executor:
       name: default
