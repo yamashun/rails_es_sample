@@ -9,9 +9,15 @@ jobs:
     executor:
       name: default
     steps:
+      - checkout
       - run:
           name: test_step
-          command: echo 'test step is executed'
+          command: |
+            if [ -z "`git log -1 --oneline | grep skip_test`" ]; then
+              echo "execute test job"
+            else
+              echo "skip test job"
+            fi
   deploy-job:
     executor:
       name: default
@@ -19,7 +25,6 @@ jobs:
       - run:
           name: deploy_step
           command: echo 'deploy step is executed'
-
 workflows:
   es-ci:
     jobs:
