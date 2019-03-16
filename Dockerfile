@@ -9,6 +9,7 @@ RUN apt-get update -qq
 RUN apt-get install -y build-essential
 RUN apt-get install -y libpq-dev
 RUN apt-get install -y nodejs
+RUN apt-get -y install git
 
 # ワーキングディレクトリの設定
 RUN mkdir /app

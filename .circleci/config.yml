@@ -5,6 +5,13 @@ executors:
     docker:
       - image: yamashun/ruby:2.5.3
 jobs:
+  checkout-code:
+    executor:
+      name: default
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: .
   test-job:
     executor:
       name: default
