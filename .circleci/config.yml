@@ -13,8 +13,7 @@ jobs:
       - run:
           name: test_step
           command: |
-            SKIP_CI_MESSAGE =`git log -1 --oneline | grep skip_test`
-            if [ -z "$SKIP_CI_MESSAGE" ]; then
+            if [ -z "`git log -1 --oneline | grep skip_test`" ]; then
               echo "execute test job"
             else
               echo "skip test job"
