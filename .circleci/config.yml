@@ -4,6 +4,7 @@ executors:
     working_directory: ~/sample
     docker:
       - image: yamashun/ruby:2.5.3
+
 jobs:
   test-job:
     executor:
@@ -13,7 +14,6 @@ jobs:
       - run:
           name: test_step
           command: |
-            git log -1 --oneline | grep skip_test
             if [ $? -ne 0 ]; then
               echo "execute test job"
             else
