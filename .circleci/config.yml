@@ -1,73 +1,33 @@
 version: 2.1
 executors:
   default:
-    working_directory: ~/es_sample
+    working_directory: ~/sample
     docker:
       - image: yamashun/ruby:2.5.3
-        environment:
-          RAILS_DATABASE_PASSWORD: ''
-          RAILS_DATABASE_HOST: 127.0.0.1
-          BUNDLE_GEMFILE: /root/es_sample/Gemfile
-          BUNDLE_PATH: /root/es_sample/vendor/bundle/ruby/2.5.0
-          ELASTICSEARCH_HOST: 127.0.0.1:9200
-      - image: mysql:5.7
-        environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD=true
-          MYSQL_USER=root
-          MYSQL_DATABASE=rails_es_sample_test
-      - image: yamashun/es
-        environment:
-          http.host: '0.0.0.0'
-          http.port: 9200
-          cluster.name: docker-cluster
-          xpack.security.enabled: false
-          ES_JAVA_OPTS: '-Xms256m -Xmx256m'
 jobs:
-  checkout-code:
+  test-job:
     executor:
       name: default
     steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - gf-bundle-1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-            - gf-bundle-1-{{ .Branch }}-
-            - gf-bundle-1-
       - run:
-          name: Bundle install
-          command: bin/bundle install --path=./vendor/bundle
-      - save_cache:
-          key: gf-bundle-1-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-          paths:
-            - ./vendor/bundle
-      - persist_to_workspace:
-          root: .
-          paths: .
-  rspec-test:
+          name: test_step
+          command: echo 'test step is executed'
+  deploy-job:
     executor:
       name: default
     steps:
-      - attach_workspace:
-          at: ~/es_sample
       - run:
-          name: Bundle install
-          command: bin/bundle install --path ./vendor/bundle
-      - run:
-          name: Database Setup
-          command: |
-            sleep 10
-            bundle exec rake db:create RAILS_ENV=test
-            bundle exec rake db:schema:load RAILS_ENV=test
-      - run:
-          name: Rspec test
-          command: bundle exec rspec --format progress --color
+          name: deploy_step
+          command: echo 'deploy step is executed'
 
 workflows:
   es-ci:
     jobs:
-      - checkout-code
-      - rspec-test:
+      - test-job
+      - deploy-job:
           requires:
-            - checkout-code
-      
-  
+            - test-job
+          filters:
+            branches:
+              only:
+                - ci_workflow_master
