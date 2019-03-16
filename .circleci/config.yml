@@ -11,7 +11,13 @@ jobs:
     steps:
       - run:
           name: test_step
-          command: echo 'test step is executed'
+          command: |
+            git log -1 --oneline | grep skip_test
+            if [ $? -ne 0 ]; then
+              echo 'test step is executed'
+            else
+              echo "test step is skipped"
+            fi
   deploy-job:
     executor:
       name: default
