@@ -23,7 +23,7 @@ jobs:
 workflows:
   es-ci:
     jobs:
-      - test-job:
+      - test-job
       - deploy-job:
           requires:
             - test-job
