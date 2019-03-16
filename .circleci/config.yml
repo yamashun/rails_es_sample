@@ -23,11 +23,10 @@ jobs:
 workflows:
   es-ci:
     jobs:
-      - checkout-code
-      - test:
+      - test-job:
       - deploy-job:
           requires:
-            - test
+            - test-job
           filters:
             branches:
               only:
