@@ -24,7 +24,7 @@ jobs:
     steps:
       - run:
           name: deploy_step
-          command: echo 'deploy step is executed'
+          command: echo 'execute deploy step'
 workflows:
   es-ci:
     jobs:
