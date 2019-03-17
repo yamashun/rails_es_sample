@@ -39,3 +39,14 @@ workflows:
             branches:
               only:
                 - ci_workflow_master
+            tags:
+              only: /^(?!.*skiptest).*$/
+  only-deploy:
+    jobs:
+      - deploy-job:
+          filters:
+            branches:
+              only:
+                - ci_workflow_master
+            tags:
+              only: /^skiptest.*$/
