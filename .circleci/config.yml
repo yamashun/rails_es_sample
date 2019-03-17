@@ -28,7 +28,10 @@ jobs:
 workflows:
   es-ci:
     jobs:
-      - test-job
+      - test-job:
+        filters:
+          tags:
+            only: /^(?!.*skiptest).*$/
       - deploy-job:
           requires:
             - test-job
