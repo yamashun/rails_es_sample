@@ -37,11 +37,11 @@ workflows:
   test-and-deploy:
     jobs:
       - test-job:
-        filters:
-          tags:
-            only: /^release.*$/
-          branches:
-            ignore: /.*/
+          filters:
+            tags:
+              only: /^release.*$/
+            branches:
+              ignore: /.*/
       - deploy-job:
           requires:
             - test-job
