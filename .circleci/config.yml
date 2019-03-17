@@ -4,6 +4,17 @@ executors:
     working_directory: ~/sample
     docker:
       - image: yamashun/ruby:2.5.3
+commands:
+  echo-test:
+    steps:
+      - run:
+          name: echo test
+          command: echo 'test'
+  echo-deploy:
+    steps:
+      - run:
+          name: echo deploy
+          command: echo 'deploy'
 jobs:
   test-job:
     executor:
@@ -29,12 +40,16 @@ workflows:
   test:
     jobs:
       - test-job:
+        pre-steps:
+            - echo-test
         filters:
           branches:
             ignore: ci_workflow_master
   deploy:
     jobs:
       - test-job:
+          pre-steps:
+            - echo-deploy
           filters:
             tags:
               only: /^(?=.*)(?!.*skiptest).*$/
