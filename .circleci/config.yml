@@ -40,11 +40,11 @@ workflows:
   test:
     jobs:
       - test-job:
-        pre-steps:
-            - echo-test
-        filters:
-          branches:
-            ignore: ci_workflow_master
+          pre-steps:
+              - echo-test
+          filters:
+            branches:
+              ignore: ci_workflow_master
   deploy:
     jobs:
       - test-job:
