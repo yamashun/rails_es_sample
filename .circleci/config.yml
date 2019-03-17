@@ -58,4 +58,3 @@ workflows:
               only: /^skiptest.*$/
             branches:
               ignore: /.*/
-
