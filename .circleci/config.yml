@@ -30,6 +30,8 @@ workflows:
     jobs:
       - test-job:
         filters:
+          branches:
+            ignore: ci_workflow_master
           tags:
             ignore: /^.*$/
   test-and-deploy:
