@@ -51,6 +51,5 @@ workflows:
       - deploy-job:
           filters:
             tags:
-              only: /^skiptest-release.*$/
+              only: /^skiptest.*$/
 
-              
