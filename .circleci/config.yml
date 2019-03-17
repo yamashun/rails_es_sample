@@ -32,14 +32,13 @@ workflows:
         filters:
           branches:
             ignore: ci_workflow_master
-          tags:
-            ignore: /.*/
-  test-and-deploy:
+  deploy:
     jobs:
       - test-job:
           filters:
             tags:
-              only: /^release.*$/
+              only: /^(?!.*skiptest).*$/
+              ignore: /.*/
             branches:
               ignore: /.*/
       - deploy-job:
@@ -47,14 +46,6 @@ workflows:
             - test-job
           filters:
             tags:
-              only: /^release.*$/
-            branches:
-              ignore: /.*/
-  only-deploy:
-    jobs:
-      - deploy-job:
-          filters:
-            tags:
-              only: /^skiptest.*$/
+              only: /.*/
             branches:
               ignore: /.*/
