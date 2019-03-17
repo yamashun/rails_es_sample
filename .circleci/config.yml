@@ -37,8 +37,7 @@ workflows:
       - test-job:
           filters:
             tags:
-              only: /^(?!.*skiptest).*$/
-              ignore: /.*/
+              only: /^(?=.*)(?!.*skiptest).*$/
             branches:
               ignore: /.*/
       - deploy-job:
