@@ -52,7 +52,8 @@ workflows:
             - echo-deploy
           filters:
             tags:
-              only: /^(?=.*)(?!.*skiptest).*$/
+              only: /^(?!.*skiptest).*$/
+              ignore: /.*/
             branches:
               ignore: /.*/
       - deploy-job:
