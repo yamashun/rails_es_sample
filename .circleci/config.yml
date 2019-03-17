@@ -26,27 +26,27 @@ jobs:
           name: deploy_step
           command: echo 'execute deploy step'
 workflows:
-  es-ci:
+  test:
     jobs:
       - test-job:
         filters:
           tags:
-            only: /^(?!.*skiptest).*$/
+            ignore: /^.*$/
+  test-and-deploy:
+    jobs:
+      - test-job:
+        filters:
+          tags:
+            only: /^release.*$/
       - deploy-job:
           requires:
             - test-job
           filters:
-            branches:
-              only:
-                - ci_workflow_master
             tags:
-              only: /^(?!.*skiptest).*$/
+              only: /^release.*$/
   only-deploy:
     jobs:
       - deploy-job:
           filters:
-            branches:
-              only:
-                - ci_workflow_master
             tags:
-              only: /^skiptest.*$/
+              only: /^skiptest-release.*$/
